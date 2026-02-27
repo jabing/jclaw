@@ -1,0 +1,5 @@
+- Task: Fix Jest and ESLint config issues in core package.
+- Actions taken:
+  - Updated packages/core/package.json test script to 'jest --passWithNoTests'.
+  - Updated packages/core/tsconfig.json to include src/\*_/_ and exclude node_modules, dist.
+- Outcome: Tests run with no tests scenario won't fail; ESLint/File discovery now includes source files.

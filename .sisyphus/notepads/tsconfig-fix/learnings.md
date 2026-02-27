@@ -1,0 +1,3 @@
+- Implemented root tsconfig.json adjustment to support ESLint with a monorepo layout.
+- Actions: read current tsconfig, extended include and added project references to core package, ensured existing options remain intact.
+- Rationale: ESLint with parserOptions.project requires TS config to include relevant source files or reference the package via project references.

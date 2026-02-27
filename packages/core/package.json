@@ -1,0 +1,39 @@
+{
+  "name": "@jclaw/core",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Core framework for JClaw - Universal Self-Evolving Agent Framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "test": "jest --passWithNoTests",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "self-evolving",
+    "openviking",
+    "evolver",
+    "evomap"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.0"
+  },
+  "peerDependencies": {
+    "openviking": "*"
+  },
+  "peerDependenciesMeta": {
+    "openviking": {
+      "optional": true
+    }
+  },
+  "optionalDependencies": {
+    "@modelcontextprotocol/sdk": "^0.1.1"
+  }
+}

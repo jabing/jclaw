@@ -1,0 +1,4 @@
+- ESLint reported: TSConfig does not include files under packages/core when using parserOptions.project pointing at root tsconfig.json.
+- Root cause: tsconfig.json only included src/; monorepo packages were outside include, so ESLint couldn't resolve program.
+- Fix applied: added include for packages/_/src/\*\*/_ and added a references entry to core package.
+- Next: run npm run lint and verify no TSESLint errors across monorepo. If new packages appear, extend include or references accordingly.

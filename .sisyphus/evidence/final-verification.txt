@@ -1,0 +1,4 @@
+package.json verification passed
+workspaces: ["packages/*"]
+PLAN.md contains 'OpenViking 集成': 4 matches
+TASKS.md contains '验收标准': 9 matches

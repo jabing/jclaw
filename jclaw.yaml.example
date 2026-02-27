@@ -1,0 +1,49 @@
+# JClaw 示例配置文件
+# 复制此文件到项目根目录并重命名为 jclaw.yaml
+
+# 执行模式
+execution:
+  mode: local  # local | docker | hybrid
+  timeout: 300000  # 5 分钟
+
+# 本地执行器配置
+local:
+  restrictions:
+    allowedPaths:
+      - ./
+      - ./src
+    blockedCommands:
+      - rm -rf /
+      - format
+      - del /s
+
+# Docker 执行器配置 (可选)
+docker:
+  image: node:20
+  memory: 512m
+  cpu: 0.5
+
+# OpenViking 配置
+openviking:
+  serverUrl: http://localhost:2033
+  timeout: 30000
+
+# 扩展配置
+extensions:
+  opencode:
+    enabled: false
+    path: opencode
+    model: claude-3-sonnet
+  
+  nanoclaw:
+    enabled: false
+    nanoclawPath: nanoclaw
+
+# 进化配置
+evolution:
+  enabled: true
+  strategies:
+    - repair
+    - optimize
+    - innovate
+  sandboxTimeout: 60000
