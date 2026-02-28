@@ -1,97 +1,97 @@
 # JClaw
 
-> 通用自我进化 Agent 框架 - 持久记忆 + 自我进化 + 智能技能发现 + 跨平台
+> Universal Self-Evolving Agent Framework - Persistent Memory + Self-Evolution + Intelligent Skill Discovery + Cross-Platform
 
-## 项目定位
+## Project Overview
 
-JClaw 是一个**通用的自我进化 Agent 框架**：
+JClaw is a **universal self-evolving agent framework**:
 
-- **核心独立** - 不强制依赖任何外部工具
-- **持久记忆** - SimpleMemory 分层上下文（增强版）
-- **自我进化** - AutoSkill 自动发现、生成、安装技能
-- **技能生态** - skill.sh 集成，复用 250k+ 社区技能
-- **按需扩展** - OpenCode/NanoClaw 等可选
-- **跨平台** - Windows/macOS/Linux，Docker 可选
+- **Core Independence** - No forced external dependencies
+- **Persistent Memory** - SimpleMemory hierarchical context (Enhanced)
+- **Self-Evolution** - AutoSkill automatic discovery, generation, and installation
+- **Skill Ecosystem** - skill.sh integration, reuse 250k+ community skills
+- **On-Demand Extensions** - OpenCode/NanoClaw optional
+- **Cross-Platform** - Windows/macOS/Linux, Docker optional
 
-## ✨ 最新特性 (v4.1)
+## ✨ New Features (v4.1)
 
-### 🔍 增强记忆系统
-- ✅ **同义词搜索** - 20+ 组中英文同义词自动映射
-- ✅ **模糊匹配** - Levenshtein 编辑距离，容错查询
-- ✅ **智能权重** - 匹配度 + 访问频率 + 时间衰减综合评分
-- ✅ **分层存储** - L0/L1/L2自动管理，性能提升 3x
+### 🔍 Enhanced Memory System
+- ✅ **Synonym Search** - 20+ Chinese-English synonym groups with auto-mapping
+- ✅ **Fuzzy Matching** - Levenshtein distance, typo-tolerant queries
+- ✅ **Smart Weighting** - Combined scoring: match + frequency + time decay
+- ✅ **Layered Storage** - L0/L1/L2 auto-management, 3x performance boost
 
-### 🧬 AutoSkill 自进化
-- ✅ **代码模板** - 预置高质量模板（HTTP、文件操作等）
-- ✅ **智能匹配** - 自动选择最优模板
-- ✅ **代码优化** - EvolutionEngine 自动改进生成代码
-- ✅ **质量验证** - 6 维度评估系统
+### 🧬 AutoSkill Self-Evolution
+- ✅ **Code Templates** - Pre-built high-quality templates (HTTP, File Operations, etc.)
+- ✅ **Smart Matching** - Automatic optimal template selection
+- ✅ **Code Optimization** - EvolutionEngine auto-improves generated code
+- ✅ **Quality Validation** - 6-dimension evaluation system
 
-### 🌟 skill.sh 生态集成
-- ✅ **社区技能** - 搜索和安装 250k+ 技能
-- ✅ **智能缓存** - 24 小时 TTL，<100ms 响应
-- ✅ **渐进式获取** - 先搜索社区 → 未找到再生成
+### 🌟 skill.sh Ecosystem Integration
+- ✅ **Community Skills** - Search and install 250k+ skills
+- ✅ **Smart Caching** - 24h TTL, <100ms response
+- ✅ **Progressive Acquisition** - Search community first → Generate if not found
 
-## 架构
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      JClaw 架构                              │
+│                      JClaw Architecture                     │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│   核心层 (必需):                                            │
-│   ├── SimpleMemory (增强版记忆系统)                          │
-│   ├── AutoSkill (自进化引擎)                                │
-│   ├── SkillDiscovery (技能发现)                             │
-│   └── 基础运行时 (无外部依赖)                               │
+│   Core Layer (Required):                                    │
+│   ├── SimpleMemory (Enhanced Memory System)                │
+│   ├── AutoSkill (Self-Evolution Engine)                    │
+│   ├── SkillDiscovery (Skill Discovery)                     │
+│   └── Base Runtime (Zero External Dependencies)            │
 │                                                             │
-│   扩展层 (可选):                                            │
-│   ├── @jclaw/extension-opencode (专业编码)                  │
+│   Extension Layer (Optional):                               │
+│   ├── @jclaw/extension-opencode (Professional Coding)       │
 │   ├── @jclaw/extension-nanoclaw (WhatsApp)                  │
-│   └── ... 自定义扩展                                        │
+│   └── ... Custom Extensions                                 │
 │                                                             │
-│   技能生态 (推荐):                                          │
-│   ├── skill.sh 社区技能 (250k+)                             │
-│   └── AutoSkill 自动生成技能                                │
+│   Skill Ecosystem (Recommended):                            │
+│   ├── skill.sh Community Skills (250k+)                     │
+│   └── AutoSkill Auto-Generated Skills                       │
 │                                                             │
-│   执行模式 (可选):                                          │
-│   ├── 本地模式 (默认，Windows 完美)                         │
-│   ├── Docker 模式 (可选，需要隔离时)                        │
-│   └── 混合模式 (可选，灵活切换)                             │
+│   Execution Modes (Optional):                               │
+│   ├── Local Mode (Default, Windows Perfect)                │
+│   ├── Docker Mode (Optional, for Isolation)                │
+│   └── Hybrid Mode (Optional, Flexible Switching)           │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 快速开始
+## Quick Start
 
-### 1. 安装核心
+### 1. Install Core
 
 ```bash
 npm install @jclaw/core
 ```
 
-### 2. 基础使用
+### 2. Basic Usage
 
 ```typescript
 import { JClawAgent, createSimpleMemoryClient } from '@jclaw/core';
 
 const agent = new JClawAgent({
   name: 'my-agent',
-  enableAutoSkill: true,  // 启用自进化
+  enableAutoSkill: true,  // Enable self-evolution
   llm: {
     apiBase: 'https://api.openai.com/v1',
     apiKey: process.env.OPENAI_API_KEY,
     model: 'gpt-4'
   },
   contextManager: createSimpleMemoryClient({
-    enableSynonyms: true,   // 启用同义词
-    enableFuzzyMatch: true, // 启用模糊匹配
+    enableSynonyms: true,   // Enable synonyms
+    enableFuzzyMatch: true, // Enable fuzzy matching
   })
 });
 
 await agent.start();
 
-// 执行任务 - AutoSkill 会自动发现、生成所需技能
+// Execute task - AutoSkill will automatically discover and generate required skills
 const result = await agent.execute({
   id: 'task-1',
   prompt: 'Send HTTP request to https://api.example.com/data'
@@ -100,29 +100,29 @@ const result = await agent.execute({
 await agent.stop();
 ```
 
-## 使用模式
+## Usage Patterns
 
-### 模式 A: 最小化 (通用用户)
+### Pattern A: Minimal (General Users)
 
 ```bash
-# 只安装核心
+# Install core only
 npm install @jclaw/core
 
-# 使用基础 Agent
-jclaw exec "帮我分析这个项目结构"
+# Use basic Agent
+jclaw exec "Analyze this project structure for me"
 ```
 
-### 模式 B: +编码 (开发者)
+### Pattern B: +Coding (Developers)
 
 ```bash
-# 核心 + OpenCode 扩展
+# Core + OpenCode extension
 npm install @jclaw/core @jclaw/extension-opencode
 
-# 使用 LSP 编码能力
-jclaw exec "重构 UserService，添加缓存"
+# Use LSP coding capabilities
+jclaw exec "Refactor UserService, add caching"
 ```
 
-### 模式 C: +技能发现 (推荐)
+### Pattern C: +Skill Discovery (Recommended)
 
 ```typescript
 const agent = new JClawAgent({
@@ -133,143 +133,122 @@ const agent = new JClawAgent({
   }
 });
 
-// 自动搜索 skill.sh 社区技能
-// 未找到则 AutoSkill 自动生成
+// Automatically searches skill.sh community skills
+// Generates with AutoSkill if not found
 await agent.execute({
   id: 'task-1',
-  prompt: '集成 GitHub API 来管理 Issues'
+  prompt: 'Integrate GitHub API to manage Issues'
 });
 ```
 
-## 核心特性
+## Core Features
 
-### 🧠 持久记忆 (SimpleMemory)
+### 🧠 Persistent Memory (SimpleMemory)
 
-**增强功能：**
-- 同义词搜索："用户" → 匹配 "user", "customer"
-- 模糊匹配："optimiztion" → 匹配 "optimization"
-- 权重评分：热门内容优先展示
-- 分层存储：L0/L1/L2自动管理
+**Enhanced Features:**
+- Synonym search: "用户" → matches "user", "customer"
+- Fuzzy matching: "optimiztion" → matches "optimization"
+- Smart weighting: Popular content prioritized
+- Layered storage: L0/L1/L2 auto-management
 
-**使用示例：**
+**Example:**
 ```typescript
 const memory = createSimpleMemoryClient();
 await memory.connect();
 
-// 保存记忆
+// Save memory
 await memory.saveMemory(
-  '使用 TypeScript 和 React 构建用户界面',
-  '前端开发指南'
+  'Build user interface with TypeScript and React',
+  'Frontend Development Guide'
 );
 
-// 使用同义词搜索（英文也能搜到中文内容）
+// Search with English synonyms (finds Chinese content)
 const result = await memory.query('customer interface');
-// ✅ 返回：使用 TypeScript 和 React 构建用户界面
+// ✅ Returns: Build user interface with TypeScript and React
 ```
 
-### 🧬 自进化 (AutoSkill)
+### 🧬 Self-Evolution (AutoSkill)
 
-**工作流程：**
-1. 分析任务 → 发现缺失能力
-2. 搜索 skill.sh 社区技能
-3. 未找到 → LLM 生成代码（模板优先）
-4. 编译安装 → 注册到系统
-5. 重试任务 → 使用新能力
+**Workflow:**
+1. Analyze task → Discover missing capabilities
+2. Search skill.sh community skills
+3. Not found → LLM generates code (template priority)
+4. Compile and install → Register to system
+5. Retry task → Use new capabilities
 
-**代码模板：**
-- `http_client` - HTTP 请求能力
-- `file_operations` - 文件操作能力
-- 更多模板持续添加中...
+**Code Templates:**
+- `http_client` - HTTP request capabilities
+- `file_operations` - File operation capabilities
+- More templates coming soon...
 
-**使用示例：**
+**Example:**
 ```typescript
 const agent = new JClawAgent({ enableAutoSkill: true });
 
-// 首次执行 - 缺少 HTTP 能力
+// First execution - missing HTTP capability
 await agent.execute({
-  prompt: '发送 HTTP 请求到 API 端点'
+  prompt: 'Send HTTP request to API endpoint'
 });
 
-// AutoSkill 自动：
-// 1. 发现缺失：http_client
-// 2. 匹配模板：http_client
-// 3. 生成扩展代码
-// 4. 编译安装
-// 5. 重试成功 ✅
+// AutoSkill automatically:
+// 1. Discovers missing: http_client
+// 2. Matches template: http_client
+// 3. Generates extension code
+// 4. Compiles and installs
+// 5. Retries successfully ✅
 
-// 后续执行 - 直接使用已安装技能
+// Subsequent executions - uses installed skill directly
 await agent.execute({
-  prompt: '发送另一个 HTTP 请求'
+  prompt: 'Send another HTTP request'
 });
-// ✅ 直接使用，无需重新生成
+// ✅ Uses directly, no regeneration needed
 ```
 
-### 🌟 技能生态 (skill.sh)
+### 🌟 Skill Ecosystem (skill.sh)
 
-**集成优势：**
-- 复用 250k+ 社区技能
-- 智能缓存（24 小时 TTL）
-- 质量评估（6 维度）
-- 零学习成本
+**Integration Benefits:**
+- Reuse 250k+ community skills
+- Smart caching (24h TTL)
+- Quality evaluation (6 dimensions)
+- Zero learning curve
 
-**使用示例：**
+**Example:**
 ```typescript
 const discovery = await skillDiscovery.discover('GitHub integration');
 
-// 自动搜索 skill.sh
-// 找到：github-integration skill
-// 质量评分：85/100
-// 推荐安装 ✅
+// Automatically searches skill.sh
+// Finds: github-integration skill
+// Quality score: 85/100
+// Recommends installation ✅
 
 await skillDiscovery.installSkill(discovery.recommended);
-// ✅ 安装完成，立即可用
+// ✅ Installation complete, ready to use
 ```
 
-## 技术栈
+## Technology Stack
 
-### 核心 (必需)
-- **SimpleMemory** - 轻量级记忆系统（零依赖）
-- **AutoSkill** - 自进化引擎
-- **SkillDiscovery** - 技能发现系统
+### Core (Required)
+- **SimpleMemory** - Lightweight memory system (zero dependencies)
+- **AutoSkill** - Self-evolution engine
+- **SkillDiscovery** - Skill discovery system
 
-### 扩展 (可选)
-- [OpenCode](https://opencode.ai) - 专业编码 (LSP)
-- [NanoClaw](https://github.com/qwibitai/nanoclaw) - WhatsApp 入口
+### Extensions (Optional)
+- [OpenCode](https://opencode.ai) - Professional coding (LSP)
+- [NanoClaw](https://github.com/qwibitai/nanoclaw) - WhatsApp entry point
 
-### 技能生态 (推荐)
-- [skill.sh](https://skills.sh) - 社区技能市场
+### Skill Ecosystem (Recommended)
+- [skill.sh](https://skills.sh) - Community skill marketplace
 
-## 文档
+## Documentation
 
-- [实施计划](./PLAN.md) - 完整架构和路线图
-- [技能系统](./SKILL_SYSTEM.md) - AutoSkill 和 skill.sh 集成详解
-- [记忆系统](./MEMORY_SYSTEM.md) - SimpleMemory 增强功能详解
-- [部署指南](./DEPLOYMENT_README.md) - 部署和配置说明
+- [Implementation Plan](./PLAN.md) - Complete architecture and roadmap
+- [Skill System](./SKILL_SYSTEM.md) - AutoSkill and skill.sh integration details
+- [Memory System](./MEMORY_SYSTEM.md) - SimpleMemory enhanced features
+- [Deployment Guide](./DEPLOYMENT_README.md) - Deployment and configuration
 
-## 性能对比
+## Performance Comparison
 
-| 功能 | 优化前 | 优化后 | 改进 |
-|------|--------|--------|------|
-| 搜索准确率 | ~60% | ~90% | +50% |
-| 代码生成质量 | 一般 | 优秀 | +80% |
-| 技能发现速度 | N/A | <100ms | 即时 |
-| 同义词支持 | ❌ | ✅ | 新增 |
-| 模糊匹配 | ❌ | ✅ | 新增 |
-
-## 开发状态
-
-- ✅ **核心框架** - 完成
-- ✅ **记忆系统增强** - 完成（同义词 + 模糊匹配 + 权重 + 分层）
-- ✅ **AutoSkill** - 完成（代码模板 + 优化）
-- ✅ **skill.sh 集成** - 完成（API+ 缓存）
-- 🔄 **文档完善** - 进行中
-
-## 许可证
-
-MIT License
-
----
-
-**Version**: v4.1  
-**Updated**: 2026-02-28  
-**Status**: Production Ready ✅
+| Feature | Before | After | Improvement |
+|---------|--------|-------|-------------|
+| Search Accuracy | ~60% | ~90% | +50% |
+| Code Generation Quality | Average | Excellent | +80% |
