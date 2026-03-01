@@ -70,7 +70,7 @@ npm run format
 | --------------------- | -------------------------------------------------- | ------------------------ |
 | **LocalExecutor**     | `tests/executor/local.test.ts`                     | 命令执行、超时、错误处理 |
 | **MockClient**        | `tests/context/mock-client.test.ts`                | 上下文管理、内存存储     |
-| **OpenVikingClient**  | `tests/context/openviking-client.test.ts`          | HTTP MCP 连接            |
+
 | **ExtensionRegistry** | `tests/extension-system/registry.test.ts`          | 扩展注册、查询           |
 | **ExtensionLoader**   | `tests/extension-system/loader.test.ts`            | 扩展加载、卸载           |
 | **CapabilityRouter**  | `tests/extension-system/capability-router.test.ts` | 能力路由                 |
@@ -346,32 +346,6 @@ npm test -- --testNamePattern="should execute basic command"
 npm test -- --coverage
 ```
 
-### Q: 如何测试 OpenViking 集成？
-
-1. 安装 OpenViking:
-
-   ```bash
-   pip install openviking
-   ```
-
-2. 启动 MCP Server:
-
-   ```bash
-   ov server --port 2033
-   ```
-
-3. 测试连接:
-
-   ```typescript
-   import { OpenVikingClient } from '@jclaw/core';
-
-   const client = new OpenVikingClient({
-     serverUrl: 'http://localhost:2033',
-   });
-
-   await client.connect();
-   console.log('Connected:', client.isConnected());
-   ```
 
 ---
 

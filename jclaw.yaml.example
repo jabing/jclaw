@@ -23,10 +23,6 @@ docker:
   memory: 512m
   cpu: 0.5
 
-# OpenViking 配置
-openviking:
-  serverUrl: http://localhost:2033
-  timeout: 30000
 
 # 扩展配置
 extensions:

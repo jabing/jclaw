@@ -22,7 +22,7 @@ export OPENAI_API_KEY=sk-your-api-key
 
 | 服务 | 部署方式 | 复杂度 | 时间 |
 |------|---------|--------|------|
-| **OpenViking** | 本地部署 | ⭐⭐⭐ | 5-10分钟 |
+
 | **Evolver** | npm 全局安装 | ⭐ | 1分钟 |
 | **EvoMap** | 使用云服务 | ⭐ | 无需部署 |
 
@@ -30,59 +30,8 @@ export OPENAI_API_KEY=sk-your-api-key
 
 ## 详细部署步骤
 
-### 步骤1: 部署 OpenViking (必须)
 
-**系统要求：**
-- Python 3.10+
-- 8GB+ RAM
-- 10GB+ 磁盘
-
-**一键部署：**
-```bash
-curl -fsSL https://raw.githubusercontent.com/jabing/jclaw/main/scripts/deploy-local.sh | bash
-```
-
-**手动部署：**
-```bash
-# 1. 创建虚拟环境
-python3 -m venv ~/.openviking-env
-source ~/.openviking-env/bin/activate  # Linux/Mac
-# 或: .\openviking-env\Scripts\activate  # Windows
-
-# 2. 安装
-pip install openviking
-
-# 3. 配置
-mkdir -p ~/.openviking
-cat > ~/.openviking/ov.conf << 'CONFIG'
-{
-  "storage": { "workspace": "~/.openviking/workspace" },
-  "embedding": {
-    "dense": {
-      "api_base": "https://api.openai.com/v1",
-      "api_key": "YOUR_OPENAI_API_KEY",
-      "provider": "openai",
-      "dimension": 3072,
-      "model": "text-embedding-3-large"
-    }
-  },
-  "vlm": {
-    "api_base": "https://api.openai.com/v1",
-    "api_key": "YOUR_OPENAI_API_KEY",
-    "provider": "openai",
-    "model": "gpt-4o-mini"
-  }
-}
-CONFIG
-
-# 4. 启动
-export OPENVIKING_CONFIG_FILE=~/.openviking/ov.conf
-python -m openviking.server --port 2033
-```
-
----
-
-### 步骤2: 安装 Evolver (必须)
+### 步骤1: 安装 Evolver (必须)
 
 ```bash
 npm install -g evolver
@@ -93,7 +42,7 @@ evolver --version
 
 ---
 
-### 步骤3: 连接 EvoMap (云服务，无需部署)
+### 步骤2: 连接 EvoMap (云服务，无需部署)
 
 EvoMap 使用官方云服务，只需要注册账号：
 
@@ -121,7 +70,7 @@ docker-compose up -d
 docker-compose ps
 
 # 查看日志
-docker-compose logs -f openviking
+docker-compose logs -f
 ```
 
 ---
@@ -139,8 +88,7 @@ docker-compose logs -f openviking
 ====================================
 [TEST] 检查环境变量...
   ✅ OPENAI_API_KEY 已设置
-[TEST] 测试 OpenViking 连接...
-  ✅ OpenViking 连接正常
+
 [TEST] 测试 Evolver...
   ✅ Evolver 已安装: v1.20.0
 [TEST] 测试 EvoMap 连接...
@@ -164,8 +112,8 @@ cd examples/real-integration
 npm install
 
 # 测试各个服务
-npm run openviking
 npm run evolver
+
 npm run evomap
 
 # 完整集成测试
@@ -189,17 +137,6 @@ npm run full
 
 ## 常见问题
 
-**Q: OpenViking 启动失败？**
-```bash
-# 检查 Python 版本
-python --version  # 需要 3.10+
-
-# 检查端口占用
-lsof -i :2033
-
-# 查看详细日志
-python -m openviking.server --port 2033 --verbose
-```
 
 **Q: Evolver 命令找不到？**
 ```bash
@@ -211,9 +148,8 @@ npm config get prefix
 export PATH="$PATH:$(npm config get prefix)/bin"
 ```
 
-**Q: 内存不足？**
-- OpenViking 需要 8GB+ RAM
 - 可以关闭其他应用释放内存
+
 - 或使用 Docker 限制资源
 
 ---
