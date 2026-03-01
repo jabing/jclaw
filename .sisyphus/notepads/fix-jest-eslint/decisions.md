@@ -1,4 +1,0 @@
-- Decision: To resolve Jest no tests error and ESLint TS config warnings, apply minimal changes:
-  - Jest: set test script to 'jest --passWithNoTests' to tolerate zero-test scenarios without failing the CI.
-  - ESLint/TS: extend tsconfig include to src/\*_/_ and exclude node_modules and dist to ensure TS compiler and ESLint can resolve source files.
-- Rationale: Avoid broad reconfigurations; keep changes scoped and safe for CI parity.

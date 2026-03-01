@@ -1,0 +1,20 @@
+# TypeScript source files
+src/
+
+# Test files
+tests/
+*.test.ts
+*.test.js
+
+# Broken files
+*.broken
+*.enhanced.ts
+
+# Documentation (except README)
+*.md
+!README.md
+
+# Config files
+.env*
+jest.config.*
+tsconfig.json

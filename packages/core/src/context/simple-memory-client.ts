@@ -184,7 +184,7 @@ export class SimpleMemoryClient implements ContextManager {
     const now = Date.now();
     const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
     const sixtyDaysAgo = now - 60 * 24 * 60 * 60 * 1000;
-    for (const [id, entry] of this.memories) {
+    for (const [, entry] of this.memories) {
       if (entry.layer === 'L0' && entry.lastAccessed < thirtyDaysAgo && entry.accessCount < 5) {
         entry.layer = 'L1';
       }
@@ -253,6 +253,7 @@ export class SimpleMemoryClient implements ContextManager {
   }
 
   private applyWeights(baseScore: number, entry: MemoryEntry): number {
+    if (baseScore <= 0) return 0;
     const accessFactor = Math.min(entry.accessCount / 10, 1) * 0.3;
     const daysSinceAccess = (Date.now() - entry.lastAccessed) / (1000 * 60 * 60 * 24);
     const timeFactor = Math.max(0, 1 - daysSinceAccess / 30) * 0.2;
@@ -287,7 +288,7 @@ export class SimpleMemoryClient implements ContextManager {
             }
           }
         }
-      } catch {}
+      } catch { /* ignore */ }
     }
   }
 

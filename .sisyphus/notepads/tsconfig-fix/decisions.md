@@ -1,3 +1,0 @@
-- Decision: Use include + references in root tsconfig.json to support ESLint monorepo checks.
-- Why: Keeps existing TS compilerOptions intact while explicitly including package sources and enabling project references for monorepo structure.
-- Alternatives considered: (a) Only using references, (b) Only extending include without references. Rejected because (a) may miss direct file inclusions for linting, (b) could lead to incomplete project graph for incremental builds.

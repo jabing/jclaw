@@ -1,2 +1,0 @@
-- No blockers encountered.
-- Changes made were minimal and isolated to config files.

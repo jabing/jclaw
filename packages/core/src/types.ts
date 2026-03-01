@@ -137,6 +137,13 @@ export interface ContextManager {
    * @returns Resource identifier
    */
   addResource(resourcePath: string): Promise<string>;
+  /**
+   * Save memory content with optional title
+   * @param content - The content to save
+   * @param title - Optional title for the memory
+   */
+  saveMemory?(content: string, title?: string): Promise<void>;
+
 }
 
 /**
@@ -144,6 +151,7 @@ export interface ContextManager {
  *
  * Describes a capability provided by an extension.
  */
+
 export interface Capability {
   /** Name of the capability */
   name: string;
@@ -151,7 +159,10 @@ export interface Capability {
   description: string;
   /** JSON Schema for input validation (optional) */
   inputSchema?: Record<string, unknown>;
+  /** Handler function for this capability */
+  handler?: (input: unknown) => Promise<unknown>;
 }
+
 
 /**
  * 扩展接口

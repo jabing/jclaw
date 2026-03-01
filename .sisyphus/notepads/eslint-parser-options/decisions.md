@@ -1,2 +1,0 @@
-- Decision: Use方案 A (remove parserOptions.project) for Phase 1 linting in monorepo.
-- Rationale: Keeps ESLint configuration simple and avoids glob expansion complexity; tsconfigRootDir ensures correct tsconfig resolution at runtime.

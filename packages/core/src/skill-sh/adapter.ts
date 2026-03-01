@@ -7,6 +7,7 @@
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import { join } from 'path';
+import { homedir } from 'os';
 import { execSync } from 'child_process';
 import type { LLMClient } from '../runtime/llm-client.js';
 import type {
@@ -161,7 +162,7 @@ export class SkillShAdapter {
       const yaml = match[1];
       const frontmatter: Record<string, unknown> = {};
       
-      for (const line of yaml.split('\n')) {
+      for (const line of yaml!.split('\n')) {
         const colonIndex = line.indexOf(':');
         if (colonIndex === -1) continue;
         
@@ -178,24 +179,39 @@ export class SkillShAdapter {
         }
       }
 
-      return frontmatter as SkillFrontmatter;
+      return frontmatter as unknown as SkillFrontmatter;
     } catch {
       return null;
     }
   }
 
   private getSkillInstallPath(skillId: string): string {
-    const possiblePaths = [
-      join(process.cwd(), '.claude', 'skills', skillId),
-      join(process.cwd(), '.codex', 'skills', skillId),
-      join(process.cwd(), '.skills', skillId),
+    // Check project-level paths first (priority: standard > others)
+    const projectPaths = [
+      join(process.cwd(), '.agents', 'skills', skillId),      // Standard format
+      join(process.cwd(), '.claude', 'skills', skillId),     // Claude compatible
+      join(process.cwd(), '.codex', 'skills', skillId),      // Codex compatible
+      join(process.cwd(), '.skills', skillId),               // Generic format
+      join(process.cwd(), '.jclaw', 'skills', skillId),      // Legacy format
     ];
 
-    for (const path of possiblePaths) {
+    for (const path of projectPaths) {
       if (existsSync(path)) return path;
     }
 
-    return join(process.cwd(), '.jclaw', 'skills', skillId);
+    // Check global paths (~/.agents/skills/, etc.)
+    const globalPaths = [
+      join(homedir(), '.agents', 'skills', skillId),         // Global standard
+      join(homedir(), '.claude', 'skills', skillId),         // Global Claude
+      join(homedir(), '.jclaw', 'skills', skillId),          // Global JClaw
+    ];
+
+    for (const path of globalPaths) {
+      if (existsSync(path)) return path;
+    }
+
+    // Default to project-level standard path for new installations
+    return join(process.cwd(), '.agents', 'skills', skillId);
   }
 
   private getCache<T>(key: string): T | null {
@@ -280,7 +296,7 @@ export async function searchSkillShAPI(
     // Cache the result
     apiCache.set(cacheKey, { data, timestamp: Date.now() });
     
-    return data;
+    return data as unknown as SkillShSearchResponse;
   } catch (error) {
     console.error('skill.sh API search failed:', error);
     // Return empty results on error
