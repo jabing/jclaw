@@ -490,13 +490,26 @@ function buildRefactorPrompt(
  */
 function parseAIRefactorResponse(response: string): TextEdit[] {
   try {
-    // Try to find JSON object in the response
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    // Try to find JSON array first (TextEdit[] format)
+    const arrayMatch = response.match(/\[[\s\S]*\]/);
+    if (arrayMatch) {
+      try {
+        const editData = JSON.parse(arrayMatch[0]);
+        if (Array.isArray(editData)) {
+          return editData.filter(isValidTextEdit);
+        }
+      } catch {
+        // Continue to try object format
+      }
+    }
+
+    // Try to find JSON object (WorkspaceEdit format)
+    const objectMatch = response.match(/\{[\s\S]*\}/);
+    if (!objectMatch) {
       return [];
     }
 
-    const editData = JSON.parse(jsonMatch[0]);
+    const editData = JSON.parse(objectMatch[0]);
 
     // Handle WorkspaceEdit format
     if (editData.changes) {
@@ -510,9 +523,9 @@ function parseAIRefactorResponse(response: string): TextEdit[] {
       return allEdits;
     }
 
-    // Handle TextEdit[] format
-    if (Array.isArray(editData)) {
-      return editData.filter(isValidTextEdit);
+    // Handle single TextEdit wrapped in object
+    if (isValidTextEdit(editData)) {
+      return [editData];
     }
 
     return [];

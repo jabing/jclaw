@@ -324,8 +324,16 @@ function getSeverityName(severity: number | undefined): string {
  * @returns Language ID for LSP
  */
 function getLanguageId(filePath: string): string {
-  const ext = filePath.split('.').pop()?.toLowerCase();
+  // Get the basename (filename without directory)
+  const basename = filePath.split('/').pop()?.toLowerCase() || '';
+  const ext = basename.split('.').pop()?.toLowerCase();
 
+  // Special handling for Dockerfile (extensionless file)
+  if (!basename.includes('.')) {
+    if (basename === 'dockerfile') {
+      return 'dockerfile';
+    }
+  }
   const languageMap: Record<string, string> = {
     ts: 'typescript',
     tsx: 'typescriptreact',

@@ -198,7 +198,8 @@ function parseEditResponse(
     // Try to find JSON array in the response
     const jsonMatch = response.match(/\[[\s\S]*\]/);
     if (!jsonMatch) {
-      return [];
+      // No JSON found, try search/replace fallback
+      return extractSimpleEdits(response, originalContent);
     }
 
     const edits = JSON.parse(jsonMatch[0]) as TextEdit[];
@@ -249,7 +250,9 @@ function extractSimpleEdits(
     const searchText = match[1]?.trim() ?? '';
     const replaceText = match[2]?.trim() ?? '';
 
+
     const position = findTextPosition(originalContent, searchText);
+
     if (position) {
       edits.push({
         range: {
@@ -260,6 +263,8 @@ function extractSimpleEdits(
       });
     }
   }
+
+
 
   return edits;
 }
@@ -315,6 +320,25 @@ function findTextPosition(
         start: { line: startLine, character: startChar },
         end: { line: endLine, character: endChar },
       };
+    }
+  }
+
+  // Try partial match for single-line searches
+  if (searchLines.length === 1) {
+    const searchLine = searchLines[0];
+    if (!searchLine) return null;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line === undefined) continue;
+
+      const charIndex = line.indexOf(searchLine);
+      if (charIndex !== -1) {
+        return {
+          start: { line: i, character: charIndex },
+          end: { line: i, character: charIndex + searchLine.length },
+        };
+      }
     }
   }
 
