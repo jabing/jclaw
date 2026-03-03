@@ -5,7 +5,9 @@
   "plan_name": null,
   "agent": null,
   "worktree_path": null,
-  "completed_at": "2026-03-03T07:30:00.000Z",
-  "phase4_status": "complete",
-  "coverage": "86.8%"
+  "completed_at": "2026-03-03T10:15:00.000Z",
+  "phase5_status": "complete",
+  "all_phases_complete": true,
+  "coverage": "86.8%",
+  "version": "0.1.0"
 }
