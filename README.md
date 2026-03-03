@@ -1,5 +1,9 @@
 # JClaw
 
+[![Test Coverage](https://img.shields.io/badge/coverage-86.8%25-green)] ![License](https://img.shields.io/badge/license-MIT-blue)] ![Version](https://img.shields.io/badge/version-0.1.0-blue)
+
+> Universal Self-Evolving Agent Framework - Persistent Memory + Self-Evolution + Intelligent Skill Discovery + Cross-Platform
+
 > Universal Self-Evolving Agent Framework - Persistent Memory + Self-Evolution + Intelligent Skill Discovery + Cross-Platform
 
 ## Project Overview
@@ -240,6 +244,31 @@ await skillDiscovery.installSkill(discovery.recommended);
 - [skill.sh](https://skills.sh) - Community skill marketplace
 
 ## Documentation
+
+### Getting Started
+- [Usage Guide](./docs/USAGE.md) - Installation and quick start
+- [API Reference](./docs/API.md) - Complete API documentation
+- [Examples](./docs/EXAMPLES.md) - Code examples and patterns
+
+### Architecture & Deployment
+- [Architecture](./docs/ARCHITECTURE.md) - System design and patterns
+- [Deployment](./docs/DEPLOYMENT.md) - Deployment guides
+
+### Reference
+- [Implementation Plan](./PLAN.md) - Complete architecture and roadmap
+- [Skill System](./SKILL_SYSTEM.md) - AutoSkill and skill.sh integration
+- [Memory System](./MEMORY_SYSTEM.md) - SimpleMemory enhanced features
+- [Deployment Guide](./DEPLOYMENT_README.md) - Deployment and configuration
+
+## Project Status
+
+### Phase 4: Testing & Documentation
+
+| Wave | Status | Description |
+------|---------|-------------|
+| Wave 1: Testing | Completed | 86.8% test coverage achieved |
+| Wave 2: API Docs | Completed | Core and extension API documentation |
+| Wave 3: Examples | Completed | Usage examples and deployment guides |
 
 - [Implementation Plan](./PLAN.md) - Complete architecture and roadmap
 - [Skill System](./SKILL_SYSTEM.md) - AutoSkill and skill.sh integration details
