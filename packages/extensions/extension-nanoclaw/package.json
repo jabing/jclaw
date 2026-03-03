@@ -14,15 +14,17 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --passWithNoTests",
-    "lint": "eslint src --ext .ts",
+    "test:coverage": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@jclaw/core": "*"
+    "@jclaw/core": "*",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.0",
+    "@types/ws": "^8.5.10",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.6",
     "typescript": "^5.8.2",

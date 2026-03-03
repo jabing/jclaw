@@ -4,8 +4,10 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>/tests'],
   moduleNameMapper: {
+    '^(\.\./src/.+)\.js$': '$1',
+    '^(\./[^/]+)\.js$': '$1',
+    '^(\./handlers/[^/]+)\.js$': '$1',
     '^@jclaw/core$': '<rootDir>/../../core/src/index.ts',
-    '^(\\.\\./src/.+)\\.js$': '$1',
     '^(\\./[^/]+)\\.js$': '$1',
   },
   transform: {

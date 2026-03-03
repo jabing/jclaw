@@ -94,7 +94,9 @@ export class RollbackManager {
 
     const entries = Array.from(this.states.entries());
     for (let i = 0; i < entries.length; i++) {
-      const [id, state] = entries[i];
+      const entry = entries[i];
+      if (entry === undefined) continue;
+      const [id, state] = entry;
       if (state.createdAt < cutoff) {
         this.states.delete(id);
         deleted++;

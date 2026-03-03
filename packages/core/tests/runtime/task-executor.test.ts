@@ -147,4 +147,41 @@ describe('TaskExecutor', () => {
       expect(result.success).toBe(true);
     });
   });
+
+  describe('with executor', () => {
+    let executor: TaskExecutor;
+
+    beforeEach(async () => {
+      await mockContextClient.connect();
+      const { createLocalExecutor } = await import('../../src/executor/local.js');
+      executor = new TaskExecutor({
+        llmClient: mockLLMClient,
+        contextManager: mockContextClient,
+        executor: createLocalExecutor(),
+        verbose: false,
+      });
+    });
+
+    it('should execute shell commands and return results', async () => {
+      // Mock LLM to return a shell command
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          choices: [{ message: { content: '```shell\necho hello\n```' } }],
+          model: 'test-model',
+        }),
+      });
+
+      const task: Task = {
+        id: 'test-task-exec',
+        prompt: 'Run a command',
+      };
+
+      const result = await executor.execute(task);
+      expect(result.success).toBe(true);
+      expect(result.output).toContain('Command: echo hello');
+      expect(result.output).toContain('Exit: 0');
+      expect(result.output).toContain('Stdout: hello');
+    });
+  });
 });

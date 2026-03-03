@@ -9,12 +9,21 @@
 
 import type { Extension, AgentRuntime } from '@jclaw/core';
 import { NANOCLAW_CAPABILITIES } from './capabilities.js';
-import { NanoClawAdapter } from './adapter.js';
-import { MessageRouter } from './message-router.js';
+import { NanoClawAdapter, type WhatsAppMessage } from './adapter.js';
+import { MessageRouter } from './router.js';
+import { TaskTrigger, createTaskTrigger } from './trigger.js';
+import {
+  MessageFormatter,
+  createMessageFormatter,
+  type MessageFormatterConfig,
+  type FormattedSegment,
+} from './formatter.js';
 
-// 创建适配器和路由器实例
+// Component instances
 let adapter: NanoClawAdapter | null = null;
 let router: MessageRouter | null = null;
+let trigger: TaskTrigger | null = null;
+let runtime: AgentRuntime | null = null;
 
 /**
  * NanoClaw Extension
@@ -35,8 +44,69 @@ export const nanoclawExtension: Extension = {
    * @param _runtime - The agent runtime instance
    */
   async install(_runtime: AgentRuntime): Promise<void> {
+    runtime = _runtime;
+
+    // 1. Create adapter
     adapter = new NanoClawAdapter();
+
+    // 2. Create router
     router = new MessageRouter();
+
+    // 3. Create trigger
+    trigger = createTaskTrigger(_runtime, {
+      commandPrefix: '@jclaw',
+      requirePrefix: true,
+      defaultTimeout: 60000,
+    });
+
+    // 4. Set up routing rule for @jclaw messages
+    router.addRule({
+      pattern: '@jclaw',
+      handler: async (message: WhatsAppMessage) => {
+        if (!trigger) return;
+
+        try {
+          const result = await trigger.executeTask(message);
+
+          if (result.triggered && adapter) {
+            // Send response back to WhatsApp
+            const responseContent = result.result?.success
+              ? `✅ Task completed:\n${result.result.output || 'Done'}`
+              : `❌ Task failed:\n${result.error || 'Unknown error'}`;
+
+            await adapter.sendMessage({
+              to: message.from,
+              content: responseContent,
+            });
+          }
+        } catch (error) {
+          console.error('Error handling @jclaw message:', error);
+
+          // Send error response
+          if (adapter) {
+            await adapter.sendMessage({
+              to: message.from,
+              content: '❌ Error processing your request. Please try again.',
+            });
+          }
+        }
+      },
+      priority: 100, // High priority for @jclaw messages
+    });
+
+    // 5. Connect adapter to router
+    adapter.on('message', async (message: WhatsAppMessage) => {
+      if (router) {
+        await router.route(message);
+      }
+    });
+
+    // 6. Start adapter connection
+    const connectResult = await adapter.connect();
+    if (!connectResult.success) {
+      console.warn('NanoClaw adapter connection failed:', connectResult.error);
+    }
+
     console.log('NanoClaw extension installed');
   },
 
@@ -44,13 +114,29 @@ export const nanoclawExtension: Extension = {
    * Uninstall and cleanup the extension
    */
   async uninstall(): Promise<void> {
-    adapter = null;
-    router = null;
+    // Stop adapter and disconnect
+    if (adapter) {
+      await adapter.stop();
+      adapter = null;
+    }
+
+    // Clear router rules
+    if (router) {
+      router.clearRules();
+      router = null;
+    }
+
+    // Clear trigger reference
+    trigger = null;
+
+    // Clear runtime reference
+    runtime = null;
+
     console.log('NanoClaw extension uninstalled');
   },
 };
 
-// 导出适配器和路由器供外部使用
+// Export accessor functions
 export function getAdapter(): NanoClawAdapter | null {
   return adapter;
 }
@@ -59,8 +145,39 @@ export function getRouter(): MessageRouter | null {
   return router;
 }
 
+export function getTrigger(): TaskTrigger | null {
+  return trigger;
+}
+
+export function getRuntime(): AgentRuntime | null {
+  return runtime;
+}
+
 // Re-export for external use
-export { NANOCLAW_CAPABILITIES, NanoClawAdapter, MessageRouter };
+export {
+  NANOCLAW_CAPABILITIES,
+  NanoClawAdapter,
+  MessageRouter,
+  TaskTrigger,
+  createTaskTrigger,
+  MessageFormatter,
+  createMessageFormatter,
+  type WhatsAppMessage,
+};
+
+export type { TaskTriggerConfig, TaskTriggerResult } from './trigger.js';
+
+export type { MessageFormatterConfig, FormattedSegment } from './formatter.js';
+
+export type { RouteRule, PatternType, RouterOptions } from './router.js';
+
+export type {
+  NanoClawOptions,
+  NanoClawConnectionConfig,
+  ConnectionType,
+  SendMessageOptions,
+  NanoClawResult,
+} from './adapter.js';
 
 // Default export for convenience
 export default nanoclawExtension;

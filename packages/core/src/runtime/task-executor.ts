@@ -89,7 +89,14 @@ export class TaskExecutor {
 
       const commands = this.extractCommands(response.content);
       if (commands.length > 0 && this.config.executor) {
-        return response.content;
+        // Execute commands using the configured executor
+        const results = [];
+        for (const cmd of commands) {
+          this.log(`Executing command: ${cmd}`);
+          const result = await this.config.executor.execute(cmd);
+          results.push(`Command: ${cmd}\nExit: ${result.exitCode}\nStdout: ${result.stdout}${result.stderr ? '\nStderr: ' + result.stderr : ''}`);
+        }
+        return results.join('\n---\n');
       }
 
       return response.content;

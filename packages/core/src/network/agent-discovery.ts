@@ -77,7 +77,7 @@ export class AgentDiscovery {
   async findBest(capability: string): Promise<DiscoveryResult | null> {
     const results = await this.findByCapability(capability);
     if (results.length === 0) return null;
-    return results[0];
+    return results[0] ?? null;
   }
 
   broadcastCapability(capability: string): void {

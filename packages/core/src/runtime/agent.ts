@@ -1,3 +1,4 @@
+import { createLocalExecutor } from '../executor/local.js';
 import type { AgentRuntime, Task, TaskResult, ContextManager } from '../types.js';
 import { TaskExecutor } from './task-executor.js';
 import { LLMClient, type LLMClientConfig } from './llm-client.js';
@@ -104,7 +105,7 @@ export class JClawAgent implements AgentRuntime {
 
     if (this.config.enableAutoSkill) {
       console.log("AutoSkill enabled - initializing...");
-      this.evolutionEngine = new EvolutionEngine({ llmClient: this.llmClient!, executor: { mode: 'local', execute: async () => ({ stdout: '', stderr: '', exitCode: 0, duration: 0 }) }, config: { maxMutations: 10, minFitness: 0.5 } });
+      this.evolutionEngine = new EvolutionEngine({ llmClient: this.llmClient!, executor: createLocalExecutor(), config: { maxMutations: 10, minFitness: 0.5 } });
       const skillShAdapter = createSkillShAdapter(this.llmClient!, this.config.skillShConfig);
       const skillConverter = createSkillConverter(this.llmClient!);
       this.autoSkillGenerator = createAutoSkillGenerator(this.llmClient!, this.extensionRegistry, this.evolutionEngine, this.config.autoSkillConfig);

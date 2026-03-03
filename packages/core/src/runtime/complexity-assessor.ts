@@ -22,22 +22,66 @@ export interface ComplexityResult {
 }
 
 const RISK_KEYWORDS = [
-  'delete', 'remove', 'drop', 'truncate', 'destroy',
-  'production', 'live', 'critical', '紧急', '重要',
-  '重构', 'refactor', 'migrate', 'migration',
-  '安全', 'security', '密码', 'password', 'secret',
-  '备份', 'backup', 'restore', '恢复',
+  // English keywords
+  'delete',
+  'remove',
+  'drop',
+  'truncate',
+  'destroy',
+  'production',
+  'live',
+  'critical',
+  'refactor',
+  'migrate',
+  'migration',
+  'security',
+  'password',
+  'secret',
+  'backup',
+  'restore',
+  // Chinese keywords
+  '删除',
+  '移除',
+  '清空',
+  '销毁',
+  '生产',
+  '线上',
+  '关键',
+  '紧急',
+  '重要',
+  '重构',
+  '迁移',
+  '安全',
+  '密码',
+  '密钥',
+  '秘密',
+  '备份',
+  '恢复',
 ];
 
 const MULTI_STEP_INDICATORS = [
-  '然后', '之后', '接着', '最后', '并且',
-  'then', 'after', 'next', 'finally', 'also',
-  '第一步', '第二步', 'step 1', 'step 2',
-  'first', 'second', 'third',
+  '然后',
+  '之后',
+  '接着',
+  '最后',
+  '并且',
+  'then',
+  'after',
+  'next',
+  'finally',
+  'also',
+  '第一步',
+  '第二步',
+  'step 1',
+  'step 2',
+  'first',
+  'second',
+  'third',
 ];
 
 export class ComplexityAssessor {
-  private historicalData: Map<string, { attempts: number; failures: number }> = new Map();
+  private historicalData: Map<string, { attempts: number; failures: number }> =
+    new Map();
 
   assess(prompt: string, context?: Record<string, unknown>): ComplexityResult {
     const factors: ComplexityFactors = {
@@ -73,23 +117,27 @@ export class ComplexityAssessor {
 
   private estimateFileCount(context?: Record<string, unknown>): number {
     if (!context) return 0;
-    
+
     const files = (context as Record<string, unknown>).files;
     if (Array.isArray(files)) {
       return Math.min(files.length / 10, 1);
     }
-    
+
     return 0;
   }
 
   private checkRiskKeywords(prompt: string): boolean {
     const lowerPrompt = prompt.toLowerCase();
-    return RISK_KEYWORDS.some(keyword => lowerPrompt.includes(keyword.toLowerCase()));
+    return RISK_KEYWORDS.some((keyword) =>
+      lowerPrompt.includes(keyword.toLowerCase())
+    );
   }
 
   private checkMultiSteps(prompt: string): boolean {
     const lowerPrompt = prompt.toLowerCase();
-    return MULTI_STEP_INDICATORS.some(indicator => lowerPrompt.includes(indicator.toLowerCase()));
+    return MULTI_STEP_INDICATORS.some((indicator) =>
+      lowerPrompt.includes(indicator.toLowerCase())
+    );
   }
 
   private getHistoricalFailureRate(prompt: string): number {
@@ -105,7 +153,7 @@ export class ComplexityAssessor {
       fileCount: 0.15,
       hasRiskKeywords: 0.25,
       hasMultiSteps: 0.15,
-      historicalFailureRate: 0.30,
+      historicalFailureRate: 0.3,
     };
 
     return (

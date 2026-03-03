@@ -134,8 +134,8 @@ export class BudgetController {
   private countConsecutiveNoImprovement(): number {
     let count = 0;
     for (let i = this.recentImprovements.length - 1; i >= 0; i--) {
-      if (this.recentImprovements[i] < this.convergence.improvementThreshold) {
-        count++;
+      const improvement = this.recentImprovements[i];
+      if (improvement !== undefined && improvement < this.convergence.improvementThreshold) {
       } else {
         break;
       }

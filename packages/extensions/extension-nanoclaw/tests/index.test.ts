@@ -4,8 +4,44 @@
  * @module @jclaw/extension-nanoclaw/tests
  */
 
-import { nanoclawExtension, NANOCLAW_CAPABILITIES } from '../src/index';
 import type { AgentRuntime } from '@jclaw/core';
+
+// Mock the adapter module before importing the extension
+jest.mock('../src/adapter', () => {
+  const { EventEmitter } = require('events');
+  
+  class MockNanoClawAdapter extends EventEmitter {
+    private connectionState: string = 'disconnected';
+    
+    async connect(): Promise<{ success: boolean; error?: string }> {
+      this.connectionState = 'connected';
+      return { success: true };
+    }
+    
+    async stop(): Promise<void> {
+      this.connectionState = 'disconnected';
+    }
+    
+    async sendMessage(): Promise<{ success: boolean }> {
+      return { success: true };
+    }
+    
+    isConnected(): boolean {
+      return this.connectionState === 'connected';
+    }
+    
+    getConnectionState(): string {
+      return this.connectionState;
+    }
+  }
+  
+  return {
+    NanoClawAdapter: MockNanoClawAdapter,
+    __esModule: true,
+  };
+});
+
+import { nanoclawExtension, NANOCLAW_CAPABILITIES } from '../src/index';
 
 describe('NanoClaw Extension', () => {
   describe('Extension Definition', () => {
