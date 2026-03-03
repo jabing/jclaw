@@ -1,6 +1,9 @@
 # JClaw
 
-[![Test Coverage](https://img.shields.io/badge/coverage-86.8%25-green)] ![License](https://img.shields.io/badge/license-MIT-blue)] ![Version](https://img.shields.io/badge/version-0.1.0-blue)
+[![CI](https://github.com/qwibitai/jclaw/actions/workflows/ci.yml/badge.svg)](https://github.com/qwibitai/jclaw/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/qwibitai/jclaw/branch/main/graph/badge.svg)](https://codecov.io/gh/qwibitai/jclaw)
+[![npm version](https://img.shields.io/npm/v/@jclaw/core?label=npm)](https://www.npmjs.com/package/@jclaw/core)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 > Universal Self-Evolving Agent Framework - Persistent Memory + Self-Evolution + Intelligent Skill Discovery + Cross-Platform
 
